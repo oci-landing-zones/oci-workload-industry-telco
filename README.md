@@ -9,7 +9,7 @@
     1. [Network](#arch-networking)
     1. [Workload](#arch-workload)
 1. [Deployment Guide](DEPLOYMENT.md)
-1. [Blog Posts](#documentation)
+1. [Blog Posts](https://blogs.oracle.com/cloud-infrastructure/post/introducing-oci-telco-landing-zone)
 1. [Feedback](#feedback)
 
 ## <a name="overview"></a>Overview
