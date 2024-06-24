@@ -1,0 +1,1085 @@
+# Copyright (c) 2024 Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+title: "OCI Telco Landing Zone Quick Start (Beta)"
+stackDescription: "This stack deploys a beta version of the OCI Telco Landing Zone Quick Start, a fully operational tenancy designed to support telco workloads on OCI, combined with the recommendations of CIS Foundations Benchmark for OCI and OCI architecture best practices. For details, please see https://github.com/oracle-quickstart/oci-workload-industry-telco."
+description: "This stack deploys a beta version of the OCI Telco Landing Zone Quick Start, a fully operational tenancy designed to support telco workloads on OCI, combined with the recommendations of CIS Foundations Benchmark for OCI and OCI architecture best practices. For details, please see <a href=\"https://github.com/oracle-quickstart/oci-workload-industry-telco\">OCI Telco Landing Zone Quick Start</a>."
+schemaVersion: 1.0.0
+version: "1.0.0"
+locale: "en"
+
+# URL of Telco Landing Zone logo icon used on Application Information tab.
+logoUrl: "https://objectstorage.us-ashburn-1.oraclecloud.com/p/taf6kC9fSJyQDNSYbxvqxS_JsdnSu56oFZ3-1h5vI7-WfJUv77mplChopLxZPePW/n/ociateam/b/cis-landing-zone/o/landing_zone_130.png"
+
+variableGroups:
+  - title: "Environment"
+    variables:
+      - "region"
+      - "service_label"
+      - "cis_level"
+      - "use_enclosing_compartment"
+      - "existing_enclosing_compartment_ocid"
+      - enc_comp_name
+      - net_comp_name
+      - sec_comp_name
+      - app_comp_name
+      - db_comp_name
+      - "env_advanced_options"
+      - "extend_landing_zone_to_new_region"
+      - "policies_in_root_compartment"
+      - "enable_template_policies"
+      - "rm_existing_iam_admin_group_name"
+      - "rm_existing_cred_admin_group_name"
+      - "rm_existing_security_admin_group_name"
+      - "rm_existing_network_admin_group_name"
+      - "rm_existing_appdev_admin_group_name"
+      - "rm_existing_database_admin_group_name"
+      - "rm_existing_exainfra_admin_group_name"
+      - "rm_existing_auditor_group_name"
+      - "rm_existing_announcement_reader_group_name"
+      - "rm_existing_cost_admin_group_name"
+      - "rm_existing_storage_admin_group_name"
+      - "existing_security_fun_dyn_group_name"
+      - "existing_appdev_fun_dyn_group_name"
+      - "existing_compute_agent_dyn_group_name"
+      - "existing_database_kms_dyn_group_name"
+ 
+  - title: Networking Configuration
+    visible: true
+    variables:
+      - VCN-name
+      - VCN-CIDR
+      - K8SLBSubnet-CIDR
+      - K8SSignallingSubnet-CIDR
+      - K8SOperatorSubnet-CIDR
+      - K8SAPIEndPointSubnet-CIDR
+      - K8SNodePoolSubnet-CIDR
+      - K8SPodSubnet-CIDR
+      - cni_type
+      - add_subnet
+      - subnet_number
+      - additionalsubnet_name
+      - additionalsubnet-CIDR
+      - additionalsubnet_type
+      - zone_name
+  - title: Workload Configuration
+    visible: true
+    variables:
+      - ClusterName
+      - kubernetes_version
+      - is_enhanced
+      - multus
+      - olm
+      - metric_server
+      - nodepool_name
+      - kubernetes_version_np
+      - Shape
+      - Flex_shape_memory
+      - Flex_shape_ocpus   
+      - node_pool_size
+      - worker_key
+      - bootvolume
+      - sriov
+      - cpu_pinning
+      - cpu
+      - hp
+      - hp_size
+      - operator-image
+      - operator_key_public
+      - operator_key_private
+  - title: Additional Node Pools
+    visible: true
+    variables:
+      - add_nodepool
+      - nodepool_quantity
+      - additionalnodepool_name
+      - kubernetes_version_np2
+      - node_pool_size2
+      - worker_key2
+      - Shape2
+      - Flex_shape_memory2
+      - Flex_shape_ocpus2
+      - sriov2
+      - cpu_pinning2
+      - cpu2
+      - hp2
+      - hp_size2
+      #- use_default
+      #- add_subnet_cidr
+      #- PodSubnet-CIDR2
+      #- enable_sriov2
+      #- enable_interface2
+      #- enable_dpdk2    
+      
+
+  - title: "Cloud Guard"
+    variables:
+      - "enable_cloud_guard"
+      - "enable_cloud_guard_cloned_recipes"
+      - "cloud_guard_reporting_region"
+      - "cloud_guard_risk_level_threshold"
+      - "cloud_guard_admin_email_endpoints"
+
+  - title: "Security Zones"
+    variables:
+    - "enable_security_zones"
+    - "sz_security_policies"
+  
+  - title: "Vulnerability Scanning"
+    variables:
+      - "vss_create"
+      - "vss_scan_schedule"
+      - "vss_scan_day"
+      - "vss_port_scan_level"
+      - "vss_agent_scan_level"
+      - "vss_agent_cis_benchmark_settings_scan_level"
+      - "vss_enable_file_scan"
+      - "vss_folders_to_scan"
+
+  - title: "Hidden Variables"
+    visible: false
+    variables:
+      - "tenancy_ocid"
+      - "user_ocid"
+      - "fingerprint"
+      - "private_key_path"
+      - "private_key_password"
+      - "existing_iam_admin_group_name"
+      - "existing_cred_admin_group_name"
+      - "existing_security_admin_group_name"
+      - "existing_network_admin_group_name"
+      - "existing_appdev_admin_group_name"
+      - "existing_database_admin_group_name"
+      - "existing_exainfra_admin_group_name"
+      - "existing_auditor_group_name"
+      - "existing_announcement_reader_group_name"
+      - "existing_cost_admin_group_name"
+      - "existing_storage_admin_group_name"
+
+  
+
+  
+variables:
+  env_advanced_options:
+    type: boolean
+    title: "Advanced Options"
+    description: "Advanced options for IAM. For details please see <a href=\"https://github.com/oracle-quickstart/oci-cis-landingzone-quickstart/blob/main/VARIABLES.md\">VARIABLES.md</a>."
+    default: false
+    
+  service_label:
+    type: string
+    title: "Service Label"
+    minLength: 1
+    maxLength: 8
+    pattern: "^[A-Za-z][A-Za-z0-9]{1,7}$"
+    description: "A unique label that gets prepended to all resources created by the Landing Zone."
+    required: true
+
+  enc_comp_name:
+    type: string
+    title: "Enclosing Compartment Name"
+    description: "Enclosing Compartment Name"
+    required: true
+    default: "Telco_LZ"
+    visible:
+      not:
+        - use_enclosing_compartment
+
+  net_comp_name:
+    type: string
+    title: "Network Compartment Name"
+    description: "Network Compartment Name"
+    required: true
+    default: "LZ-Network"
+  sec_comp_name:
+    type: string
+    title: "Security Compartment Name"
+    description: "Security Compartment Name"
+    required: true
+    default: "LZ-Security"
+  app_comp_name:
+    type: string
+    title: "Workload Compartment Name"
+    description: "Compartment where the OKE cluster will be deployed. This compartment can be used for any type of workload or application."
+    required: true
+    default: "LZ-Workload"
+  db_comp_name:
+    type: string
+    title: "Database Compartment Name"
+    description: "Database Compartment Name. This compartment is reserved for future use with OCI database services."
+    required: true
+    default: "LZ-Db"
+
+  cis_level:
+    type: enum
+    title: CIS Level
+    description: "Determines CIS OCI Benchmark Level of services deployed by the OCI Telco Landing Zone in the tenancy will be configured. Level 1 is be practical and prudent. Level 2 is intended for environments where security is more critical than manageability and usability. Level 2 drives the creation of an OCI Vault, buckets encryption with a customer managed key, write logs for buckets and the usage of specific policies in Security Zones. More info: <a href=\"https://www.cisecurity.org/benchmark/oracle_cloud\">CIS OCI Benchmark</a>."
+    enum:
+      - "1"
+      - "2"
+    required: true  
+    default: "1"
+
+  region:
+    type: oci:identity:region:name
+    title: "Region"
+    description: "The region for resources deployment."
+    required: true
+
+  compartment_ocid:
+    type: oci:identity:compartment:id
+    required: true
+    visible: false
+
+  use_enclosing_compartment:
+    type: boolean
+    title: "Use an Enclosing Compartment?"
+    description: "Whether the Landing Zone compartments are created within an enclosing compartment. If unchecked, the Landing Zone compartments are created in the Root compartment, in which case you must have the required permissions."
+    default: true
+  
+  existing_enclosing_compartment_ocid:
+    type: oci:identity:compartment:id
+    title: "Existing Enclosing Compartment"
+    description: "The enclosing compartment where Landing Zone compartments will be created. If not provided and \"Use enclosing compartment?\" is checked, an enclosing compartment is created under the Root compartment."
+    required: false 
+    default: ${compartment_ocid}
+    visible: use_enclosing_compartment
+
+  extend_landing_zone_to_new_region:
+    type: boolean
+    title: "Extend Landing Zone to new region?"
+    description: "Whether Landing Zone is being extended to another region. When set to true, compartments, groups, policies and resources at the home region are not provisioned. Use this when you want provision a Landing Zone in a new region, but reuse existing Landing Zone resources in the home region."
+    default: false
+    visible: false
+  
+  policies_in_root_compartment:
+    type: enum
+    title: "CREATE or USE policies in the root compartment?"
+    description: "Whether policies in the root compartment should be created or simply used. If \"CREATE\", you must be sure the user executing this stack has permissions to create policies in the root compartment. If \"USE\", policies must have been created previously."
+    enum:
+      - "CREATE"
+      - "USE"
+    required: true
+    default: "CREATE"
+    visible: env_advanced_options
+
+  enable_template_policies:
+    type: boolean
+    title: "Enable template policies?"
+    description: "Whether policies should be created based on metadata associated to compartments. This is an alternative way of managing policies, enabled by the <a href=\"https://github.com/oracle-quickstart/terraform-oci-cis-landing-zone-iam/tree/main/policies\">CIS Landing Zone standalone IAM policy module</a>. When set to true, the grants to resources belonging to a specific compartment are combined into a single policy that is attached to the compartment itself. This differs from the default approach, where grants are combined per grantee and attached to the enclosing compartment."
+    default: false
+    visible: env_advanced_options  
+
+  rm_existing_iam_admin_group_name:
+    type: oci:identity:groups:id
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+    title: "Existing IAM admin group name"
+    description: "Existing group to which IAM management policies will be granted to."
+    visible: env_advanced_options 
+        
+  rm_existing_cred_admin_group_name:
+    type: oci:identity:groups:id
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+    title: "Existing credentials admin group name"
+    description: "Existing group to which credentials management policies will be granted to."
+    visible: env_advanced_options
+      
+  rm_existing_security_admin_group_name:
+    type: oci:identity:groups:id
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+    title: "Existing security admin group name"
+    description: "Existing group to which security management policies will be granted to."
+    visible: env_advanced_options
+      
+  rm_existing_network_admin_group_name:
+    type: oci:identity:groups:id
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+    title: "Existing network admin group name"
+    description: "Existing group to which network management policies will be granted to."
+    visible: env_advanced_options
+      
+  rm_existing_appdev_admin_group_name:
+    type: oci:identity:groups:id
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+    title: "Existing application development admin group name"
+    description: "Existing group to which application development management policies will be granted to."
+    visible: env_advanced_options
+      
+  rm_existing_database_admin_group_name:
+    type: oci:identity:groups:id
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+    title: "Existing database admin group name"
+    description: "Existing group to which database management policies will be granted to."
+    visible: env_advanced_options
+  
+  rm_existing_exainfra_admin_group_name:
+    type: oci:identity:groups:id
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+    title: "Existing admin group name for Exadata infrastructure"
+    description: "Existing group to which Exadata infrastructure management policies will be granted to."
+    visible: env_advanced_options      
+  
+  rm_existing_auditor_group_name:
+    type: oci:identity:groups:id
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+    title: "Existing auditors group name"
+    description: "Existing group to which auditing policies will be granted to."
+    visible: env_advanced_options
+      
+  rm_existing_announcement_reader_group_name:
+    type: oci:identity:groups:id
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+    title: "Existing announcement readers group name"
+    description: "Existing group to which announcement reading policies will be granted to."
+    visible: env_advanced_options  
+  
+  rm_existing_cost_admin_group_name:
+    type: oci:identity:groups:id
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+    title: "Existing Cost Admin group name"
+    description: "Existing group to which Cost management policies will be granted to."
+    visible: env_advanced_options
+
+  rm_existing_storage_admin_group_name:
+    type: oci:identity:groups:id
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+    title: "Existing Storage Admin group name"
+    description: "Existing group to which Storage management policies will be granted to."
+    visible: env_advanced_options  
+ 
+  existing_security_fun_dyn_group_name:
+    type: oci:identity:dynamicgroups:id
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+    title: "Existing security dynamic group name"
+    description: "Existing security dynamic group to run functions."
+    visible: env_advanced_options
+
+  existing_appdev_fun_dyn_group_name:
+    type: oci:identity:dynamicgroups:id
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+    title: "Existing appdev dynamic group name"
+    description: "Existing appdev dynamic group."
+    visible: env_advanced_options
+
+  existing_compute_agent_dyn_group_name:
+    type: oci:identity:dynamicgroups:id
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+    title: "Existing compute agent dynamic group name"
+    description: "Existing compute agent dynamic group for management agent access."
+    visible: env_advanced_options
+
+  existing_database_kms_dyn_group_name:
+    type: oci:identity:dynamicgroups:id
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+    title: "Existing database dynamic group name"
+    description: "Existing database dynamic group for database to access keys."
+    visible: env_advanced_options
+ 
+  net_advanced_options:
+    type: boolean
+    title: "Advanced Options"
+    description: "Advanced options for Networking. For details please see <a href=\"https://github.com/oracle-quickstart/oci-cis-landingzone-quickstart/blob/main/VARIABLES.md\">VARIABLES.md</a>."
+    default: false
+    visible: false
+      
+  enable_cloud_guard:
+    type: boolean
+    title: "Enable Cloud Guard Service? (Uncheck if Cloud Guard is already enabled and a target exists for the Root compartment)"
+    description: "If selected, Cloud Guard service is enabled and the Root compartment is configured with a Cloud Guard target, as long as there is no pre-existing Cloud Guard target for the Root compartment (or target creation will fail). Keep in mind that once you select this, Cloud Guard target is managed by Landing Zone. If later on you unselect this option, the managed target is deleted and all (open, resolved and dismissed) problems associated with the deleted target are moved to 'deleted' state. This operation happens in the background and would take some time to complete. Deleted problems can be viewed from the problems page using the 'deleted' status filter. For more details on Cloud Guard problems lifecycle, see <a href=\"https://docs.oracle.com/en-us/iaas/cloud-guard/using/problems-page.htm#problems-page__sect_prob_lifecycle\">documentation</a>. If Cloud Guard is already enabled and a target exists for the Root compartment, unselect this option."
+    required: true
+    default: false
+
+  enable_cloud_guard_cloned_recipes:
+    type: boolean
+    title: "Enable Cloud Guard Cloned Recipes?"  
+    description: "Whether cloned recipes are attached to the managed Cloud Guard target. If not set, Oracle managed recipes are attached."
+    required: false
+    visible: false
+    default: false
+      
+  cloud_guard_reporting_region:
+    type: oci:identity:region:name
+    title: "Reporting Region"
+    description: "Cloud Guard reporting region, where Cloud Guard reporting resources are kept. If not set, it defaults to home region."
+    required: false
+    visible: enable_cloud_guard
+
+  cloud_guard_risk_level_threshold:
+    type: enum
+    title: "Minimum Risk Level Threshold"
+    description: "Determines the minimum risk level that will trigger an event and send information about the problem to the Cloud Guard Email Endpoints. E.g. a minimum risk level of High will include problems with High or Critical risk levels."
+    required: false
+    default: High
+    enum:
+      - Critical
+      - High
+      - Medium
+      - Minor
+      - Low
+    visible: false
+
+  cloud_guard_admin_email_endpoints:
+    type: array
+    items:
+      type: string
+    uniqueItems: true
+    title: "Cloud Guard Admin Email Endpoints"
+    required: false
+    description: "List of email addresses for Cloud Guard related notifications. (Type an email address and hit enter to enter multiple values)"
+    visible: false 
+  
+  # Security Zone - Variables
+  enable_security_zones:
+    type: boolean
+    title: Enable Security Zones
+    description: "Determines if Security Zones are enabled in Landing Zone compartments. When set to true, the Security Zone is enabled for the enclosing compartment. If no enclosing compartment is used, then the Security Zone is not enabled."
+    default: false
+
+
+  sz_security_policies:
+    type: array
+    items:
+      type: string
+    uniqueItems: true
+    title: Security Zone policies
+    description: "List of Security Zones Policy OCIDs to add to security zone recipe. (Type a Security Zone policy OCID and hit enter to enter multiple values). To get a Security Zone policy OCID use the oci cli:  oci cloud-guard security-policy-collection list-security-policies --compartment-id your-tenancy-ocid"
+    visible: false
+
+  
+
+  # Vulnerability Scanning
+  vss_create:
+    type: boolean
+    title: "Enable Vulnerability Scanning?"
+    default: false
+    description: "Whether Vulnerability Scanning should be enabled. If checked, a scanning recipe is enabled and scanning targets are enabled for each Landing Zone compartment."
+  
+  vss_scan_schedule:
+    type: enum
+    title: "Scanning Schedule"
+    description: "When to scan. WEEKLY or DAILY."
+    #default: WEEKLY
+    visible: vss_create
+    enum:
+      - WEEKLY
+      - DAILY
+
+  vss_scan_day:
+    type: enum
+    title: "Scanning Day"
+    description: "The day when to scan. Applies to weekly scans only."
+    #default: SUNDAY
+    enum:
+      - SUNDAY
+      - MONDAY
+      - TUESDAY
+      - WEDNESDAY
+      - THURSDAY
+      - FRIDAY
+      - SATURDAY 
+    visible:
+      and:
+        - ${vss_create}
+        - eq:
+          - vss_scan_schedule
+          - "WEEKLY"
+
+  vss_port_scan_level:
+    type: enum
+    title: "Port Scan Level"
+    description : "Checks for open ports using a network mapper that searches your public IP addresses. STANDARD checks the 1000 most common port numbers, LIGHT checks the 100 most common port numbers, NONE does not check for open ports."
+    enum:
+      - STANDARD
+      - LIGHT
+      - NONE  
+    visible: vss_create
+
+  vss_agent_scan_level:
+    type: enum
+    title: "Agent Scan Level"
+    description : "Checks for open ports on both public and private IP addresses, OS vulnerabilities; compliance with industry benchmarks, vulnerabilities in third-party application files (for application files scanning, check 'Enable File Scanning' below)."
+    enum:
+      - STANDARD
+      - NONE  
+    visible: vss_create   
+
+  vss_agent_cis_benchmark_settings_scan_level:
+    type: enum
+    title: "Agent CIS Benchmark Settings Scan Level"
+    description : "Checks targets for compliance with industry-standard benchmarks published by the Center for Internet Security (CIS)"
+    enum:
+      - STRICT
+      - MEDIUM
+      - LIGHTWEIGHT
+      - NONE
+    visible:
+      and:
+        - ${vss_create}
+        - eq:
+          - vss_agent_scan_level
+          - "STANDARD"
+
+  vss_enable_file_scan:
+    type: boolean
+    default: false
+    title: "Enable File Scanning?"
+    description: "Whether file scanning is enabled."
+    visible:
+      and:
+        - ${vss_create}
+        - eq:
+          - vss_agent_scan_level
+          - "STANDARD"
+
+  vss_folders_to_scan:
+    type: array
+    items:
+      type: string
+    uniqueItems: true
+    title: "Folders to Scan"
+    required: false
+    description: "List of file system folders to scan. Required if 'Enable Folder Scanning?' is selected. Currently, the Scanning service checks for vulnerabilities only in log4j and spring4shell (Type a value and hit enter to enter multiple values)."
+    visible: 
+      and:
+        - ${vss_create}
+        - ${vss_enable_file_scan}
+        - eq:
+          - vss_agent_scan_level
+          - "STANDARD"
+
+
+  VCN-name:
+    type: string
+    visible: true
+    required: false
+    title: "VCN Custom Name"
+    description: "The desired VCN name, which overrides the default VCN name."
+    default: "Telco-LZ-VCN"
+
+  zone_name:
+    type: string
+    visible: true
+    required: false
+    title: "Private DNS Zone Name"
+    description: "A private DNS Zone to be created in the default DNS resolver private view of the VCN."
+    default: "3gppnetwork.org"
+ 
+  VCN-CIDR:
+    type: array
+    items:
+      type: string
+    visible: true
+    required: false
+    title: "VCN CIDRs"
+    description: "CIDR blocks for the VCNs in CIDR notation. By default, this stack creates a k8s subnet, a worker node subnet, and two load balancer subnets."
+    default: ["10.0.0.0/16"]
+    
+  K8SLBSubnet-CIDR:
+    type: string
+    visible: true
+    required: false
+    title: "Operations, Administration, and Maintenance (OAM) Subnet"
+    description: "The default private load balancer subnet used by OKE to deploy load balancer services, in CIDR notation. It is recommended that this subnet be used for OAM load balancer services. All subnets must be contained within the VCN CIDRs."
+    default: "10.0.2.0/24"
+
+  K8SSignallingSubnet-CIDR:
+    type: string
+    visible: true
+    required: false
+    title: "Signalling Subnet"
+    description: "A private subnet that can be used to deploy load balancer services related to signaling traffic, in CIDR notation. It can be used by adding subnet annotations, as described in <a href=\"https://docs.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengcreatingloadbalancer_topic-Summaryofannotations.htm\">Summary of Annotations for Load Balancers and Network Load Balancers</a>. All subnets must be contained within the VCN CIDRs."
+    default: "10.0.6.0/24"
+    
+  K8SOperatorSubnet-CIDR:
+    type: string
+    visible: true
+    required: false
+    title: "Operator Subnet"
+    description: "CIDR block for the OKE Operator private subnet in CIDR notation. All subnets must be contained within the VCN CIDRs."
+    default: "10.0.3.0/24"
+
+  K8SAPIEndPointSubnet-CIDR:
+    type: string
+    visible: true
+    required: false
+    title: "K8s API Endpoint Subnet"
+    description: "CIDR block for the OKE API Endpoint private subnet in CIDR notation. All subnets must be contained within the VCN CIDRs."
+    default: "10.0.0.0/30"
+  
+  K8SNodePoolSubnet-CIDR:
+    type: string
+    visible: true
+    required: false
+    title: "Node Pool Subnet"
+    description: "CIDR block for the OKE node pool private subnet in CIDR notation. All subnets must be contained within the VCN CIDRs."
+    default: "10.0.1.0/24"
+
+  K8SPodSubnet-CIDR:
+    type: string
+    visible:
+      eq:
+       - cni_type
+       - native
+    required: false
+    title: "Pod Subnet"
+    description: "CIDR block for the OKE pod private subnet in CIDR notation. This subnet will only be required when using OCI_VCN_IP_NATIVE CNI."
+    default: "10.0.5.0/24"
+  vcn_cidrs:
+    type: array
+    visible: false
+    items:
+      type: string
+    uniqueItems: true
+    required: false
+    maxItems: 9
+    minItems: 1
+    title: "VCN CIDR Blocks"
+    description: "CIDR blocks for the VCN in CIDR notation. CIDR blocks must be private IPs only."
+    default: ["10.0.0.0/16"]
+
+  vcn_names:
+    type: array
+    visible: false
+    items:
+      type: string
+    uniqueItems: true
+    maxItems: 9
+    minItems: 1
+    title: "VCN Custom Name"
+    description: "The VCNs custom name, overriding the default VCN name."
+    required: false
+    default: []  
+  
+  add_subnet:
+    type: boolean
+    title: "Create Additional Subnets?"
+    description: "If checked, additional subnets can be created within the VCN. These subnets can be used as additional worker node subnets or load balancer subnets, which can be public or private."
+    visible: true
+    default: fals
+  subnet_number:
+    type: number
+    title: "Number of Additional Subnets"
+    description: "Indicate number of additional required subnets."
+    visible:
+        and:
+          - add_subnet
+    default: 0
+
+  additionalsubnet_name:
+    type: array
+    items:
+      type: string
+    visible:
+        gt:
+          - subnet_number
+          - 0
+          - and:
+            - add_subnet
+            - true
+    required: false
+    title: "Names of additional Subnets"
+    description: "The additional subnets custom names, overriding the default subnet names."
+    default: []
+
+  worker_key2:
+    type: file
+    title: "Additional Node Pool Public Key"
+    description: "The public key used for the additional node pools. If no key is uploaded, the worker nodes will not be accesible thorugh SSH."
+    required: true
+    visible: add_nodepool
+
+  additionalsubnet-CIDR:
+    type: array
+    items:
+      type: string
+    visible:
+        gt:
+          - subnet_number
+          - 0
+          - and:
+            - add_subnet
+            - true
+    required: true
+    title: "Select Additional Subnet's CIDR"
+    description: "CIDR blocks for the additional subnets in CIDR notation. Each CIDR block corresponds to one subnet. There must be one CIDR block corresponding to each subnet custom name provided in 'Names of additional Subnets', in the same order."
+    default: [""]
+
+  additionalsubnet_type:
+    type: array
+    items:
+      type: string
+    visible: false
+    required: false
+    title: "Additional Subnets Type"
+    description: "Indicates if each new additional subnet is private or public. Only 'Private' or 'Public' is accepted, per each additional subnet, in the same order."
+    default: ["Private"]
+
+  multus:
+    type: boolean
+    title: "Enable Multus"
+    visible: true
+    description: "Multus is a container network interface (CNI) plugin for Kubernetes that enables attaching multiple network interfaces to pods. If checked, the latest version of Multus will be installed in the OKE cluster. More info: <a href=\"https://github.com/k8snetworkplumbingwg/multus-cni\">multus-cni</a>"
+    default: false
+  
+  olm:
+    type: boolean
+    title: "Enable Operator Lifecycle Manager"
+    visible: true
+    description: "Operator Lifecycle Manager (OLM) extends Kubernetes to provide a declarative way to install, manage, and upgrade Operators and their dependencies in a cluster. If checked, the latest version of OLM will be installed in the OKE cluster. More info: <a href=\"https://github.com/operator-framework/operator-lifecycle-manager\">operator-lifecycle-manager</a>"
+    default: false
+
+  metric_server:
+    type: boolean
+    title: "Enable Metrics Server"
+    visible: true
+    description: "Metrics Server is a scalable, efficient source of container resource metrics for Kubernetes built-in autoscaling pipelines. If checked, the latest version of Metrics Server will be installed in the OKE cluster. More info: <a href=\"https://github.com/kubernetes-sigs/metrics-server\">metrics-server</a>"
+    default: false
+
+  sriov:
+    type: boolean
+    title: "Enable SR-IOV"
+    visible: true
+    description: "If checked, Multus and the SR-IOV plugin will be installed. SR-IOV will be enabled in the default node pool. More info: <a href=\"https://github.com/k8snetworkplumbingwg/sriov-cni\">sriov-cni</a>"
+    default: false
+  sriov2:
+    type: boolean
+    default: false
+    visible: add_nodepool
+    title: "Enable SR-IOV"
+    description: "If checked, Multus and the SR-IOV plugin will be installed. SR-IOV will be enabled in the default node pool. More info: <a href=\"https://github.com/k8snetworkplumbingwg/sriov-cni\">sriov-cni</a>"
+   
+  cpu_pinning:
+    type: boolean
+    title: "Enable CPU Pinning"
+    visible: true
+    description: "If checked, specific virtual CPU (vCPU) cores of the VM-based worker nodes will be assigned to specific physical CPU cores on the underlying host."
+    default: false
+  hp:
+    type: boolean
+    title: "Enable Huge Pages (1 GB)"
+    description: "Enable huge pages with a size of 1 GB."
+    visible: true
+    default: false
+  cpu:
+    type: number
+    title: "Reserved CPUs"
+    visible: cpu_pinning
+    description: "Specify number of reserved CPUs."
+    default: 0
+  cpu_pinning2:
+    type: boolean
+    default: false
+    visible: add_nodepool
+    description: "If checked, specific virtual CPU (vCPU) cores of the VM-based worker nodes will be assigned to specific physical CPU cores on the underlying host."
+    title: "Enable CPU Pinning"
+  cpu2:
+    type: number
+    title: "Reserved CPUs"
+    visible: cpu_pinning2
+    description: "Specify number of reserved CPUs."
+    default: 0
+  hp2:
+    type: boolean
+    title: "Enable Huge Pages"
+    visible: add_nodepool
+    description: "Enable huge pages with a size of 1 GB."
+    default: false
+  hp_size:
+    type: number
+    title: "Huge Pages Size (1 GB)."
+    visible: hp
+    default: 1
+  hp_size2:
+    type: number
+    default: 1
+    visible:
+         and:
+          - add_nodepool
+          - hp2
+    title: "Huge Pages Size (1 GB)"
+    required: true
+
+  deploy_exainfra_cmp:
+    type: boolean
+    title: "Create Compartment for Exadata Infrastructure?"
+    description: "Whether a compartment for Exadata infrastructure should be created. If unchecked, Exadata infrastructure should be created in the database compartment."
+    default: false
+    visible: false
+  
+  kubernetes_version:
+    type: oci:kubernetes:versions:id
+    visible: true
+    required: true
+    title: "Kubernetes Version"
+    description: "The Kubernetes version of the Oracle Cloud Infrastructure Container Engine for Kubernetes (OKE)."
+    default: false
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+      clusterOptionId: "all"
+    
+  node_pool_size:
+    type: number
+    default: 3
+    title: "Number of Worker Nodes"
+    description: "Specifies the number of worker nodes within the OKE node pool."
+  
+  operator_key_public:
+    type: file
+    title: Operator Host Public Key
+    description: The public key to be used for login into the operator host using a secure shell (SSH) connection.
+    required: true
+  operator_key_private:
+    type: file
+    title: Operator Host Private Key
+    description: The private key to be used for login into the operator host using a secure shell (SSH) connection.
+    required: true
+  worker_key:
+    type: file
+    title: Node Pool Public Key
+    description: The public key to be used for login into the worker nodes in the default node pool using a secure shell (SSH) connection.
+    required: true
+  
+
+  ClusterName:
+    type: string
+    visible: true
+    required: false
+    title: "OKE Cluster Name"
+    description: "Name of the OKE Cluster"
+    default: "LZ-OKECluster"
+  nodepool_name:
+    type: string
+    visible: true
+    required: false
+    title: "Node Pool Name"
+    description: "The desired customer name for the OKE cluster's default node pool."
+    default: "pool1"
+  is_enhanced:
+    type: bool
+    visible: false
+    required: false
+    title: "Enhanced Cluster?"
+    description: "Specify if the new OKE cluster will be a basic or enhanced cluster. For more information, reffer to <a href=\"https://docs.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengcomparingenhancedwithbasicclusters_topic.htm#contengcomparingenhancedwithbasicclusters_topic-basicclusters\">Comparing Enhanced Clusters with Basic Clusters</a>"
+    default: "false"
+  cni_type:
+    title: "CNI Plugin"
+    description: "Allows the selection of the OKE cluster's default CNI. There are 2 options: Flannel or VCN-native pod networking."
+    type: enum
+    # enumerated values
+    enum:
+    - flannel
+    - native
+    default: "flannel"
+    required: true
+    visible: false
+
+  operator-image:
+    type: oci:core:image:id
+    required: true
+    visible: true
+    title: Operator Image
+    description: "Desired image for the Operator instance. Only Oracle Linux Cloud Developer images are allowed."
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+  
+  Shape:
+    type: oci:core:instanceshape:name
+    required: false
+    visible: true
+    title: "Node Pool Shape"
+    description: "Desired shape for the OKE Node Pool."
+    default: "VM.Standard.E4.Flex"
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+  Flex_shape_ocpus:
+    type: number
+    required: false
+    minimum: 1
+    maximum: 128
+    multipleOf: 1
+    default: 6
+    title: "Flex Shape OCPUs"
+    description: "OCPUs for each Flex shape Worker Node instance."
+    visible: true
+
+  kubernetes_version_np:
+    type: oci:kubernetes:versions:id
+    visible: true
+    required: true
+    title: "Node Pool Kubernetes Version"
+    description: "The Kubernetes version of the worker nodes in the node pool. The Kubernetes version of the node pools cannot be newer than the Kubernetes version of the OKE cluster."
+    default: false
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+      clusterOptionId: "all"
+  kubernetes_version_np2:
+    type: oci:kubernetes:versions:id
+    visible: add_nodepool
+    required: true
+    title: "Node Pool Kubernetes Version"
+    description: "The Kubernetes version of the worker nodes in the node pool. The Kubernetes version of the node pools cannot be newer than the Kubernetes version of the OKE cluster."
+    default: false
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+      clusterOptionId: "all"
+  Flex_shape_memory:
+    type: number
+    required: false
+    minimum: 1
+    maximum: 128
+    multipleOf: 1
+    default: 10
+    title: "Flex Shape Memory (GB)"
+    description: "Memory for each Flex shape Worker Node instance."
+    visible: true
+  bootvolume:
+    type: number
+    required: false
+    minimum: 2
+    maximum: 32768
+    visible: true
+    default: 50
+    title: "OKE Node Pool Boot Volume"
+    description: "Size of the boot volume of each Worker Node instance of the node pool."
+
+  #Additional nodepools
+  add_nodepool:
+    type: boolean
+    title: "Create Additional Node Pool?"
+    description: "If checked, additional node pools will be created."
+    visible: true
+    default: false
+  nodepool_quantity:
+    type: number
+    required: false
+    visible: false
+    default: 1
+    title: "Number of Node pools"
+    description: "Number of OKE Node pool"
+    maximum: 1
+  Shape2:
+    type: oci:core:instanceshape:name
+    required: false
+    visible: add_nodepool
+    title: "Node Pool Shape"
+    description: "Desired shape for the Additional OKE Nod Pool."
+    default: "VM.Standard.E4.Flex"
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+  node_pool_size2:
+    type: number
+    default: 0
+    visible: add_nodepool
+    title: "Number of Worker Nodes"
+    description: "Specifies the number of worker nodes within the OKE node pool."
+  additionalnodepool_name:
+    type: string
+    visible: add_nodepool
+    required: false
+    title: "Name of Additional Node Pool"
+    description: "The additional Node pools custom names, overriding the default Node pool names."
+    default: "pool2"
+  Flex_shape_memory2:
+    type: number
+    required: false
+    default: 10
+    title: "Flex Shape Memory (GB)"
+    description: "Memory for each Flex shape Worker Node instance."
+    visible: add_nodepool
+
+  Flex_shape_ocpus2:
+    type: number
+    required: false
+    default: 6
+    title: "Flex Shape OCPUs"
+    description: "OCPUs for each Flex shape Worker Node instance."
+    visible: add_nodepool
+
+
+# Variables not required to display to user
+  user_ocid:
+    type: string
+
+  fingerprint:
+    type: string
+
+  private_key_path:
+    type: string
+
+  private_key_password:
+    type: password
+
+outputs:
+  release:
+    type: string
+    title: CIS Landing Zone Release
+
+  region:
+    type: string
+    title: Region
+
+  service_label:
+    type: string
+    title: Service Label
+
+  cis_level:
+    type: string
+    title: CIS Profile Level  
+
+  compartments:
+    type: json
+    title: Compartments
+
+  vcns:
+    type: json
+    title: (Spoke) Virtual Cloud Networks 
+
+  subnets:
+    type: json
+    title: (Spoke) Virtual Cloud Networks Subnets  
+
+  dmz_vcn:
+    type: json
+    title: DMZ (Hub) Virtual Cloud Network   
+
+  dmz_subnets:
+    type: json
+    title: DMZ (Hub) Virtual Cloud Network Subnets
+
+  bastions:
+    type: json
+    title: Bastions   
+
+  
+    
+outputGroups:
+  - title: Environment
+    outputs:
+      - ${release}
+      - ${region}
+      - ${service_label}
+      - ${cis_level}
+      - ${compartments}
+
+  - title: Networking
+    outputs:
+      - ${vcns}
+      - ${subnets} 
+      - ${dmz_vcn}
+      - ${dmz_subnets} 
+      - ${bastions}      

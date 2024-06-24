@@ -1,4 +1,4 @@
-<<<<<<< Updated upstream
+
 # oci-quickstart-template
 
 The [Oracle Cloud Infrastructure (OCI) Quick Start](https://github.com/oracle-quickstart?q=oci-quickstart) is a collection of examples that allow Oracle Cloud Infrastructure users to get a quick start deploying advanced infrastructure on OCI.
@@ -249,7 +249,6 @@ variable "marketplace_source_images" {
 ```
 
 2. Run your tests using the Terraform CLI or build a new package and deploy on ORM.
-=======
 # Oracle Telco Landing Zone Quick Start Template
 ![Landing_Zone_Logo](images/landing%20zone_300.png)
 ## Table of Contents
@@ -261,6 +260,7 @@ variable "marketplace_source_images" {
     1. [Network](#arch-networking)
     1. [Workload](#arch-workload)
 1. [Deployment Guide](DEPLOYMENT.md)
+
 1. [Blog Posts](#documentation)
 1. [Feedback](#feedback)
 
@@ -295,7 +295,9 @@ The key features of the Landing Zone are listed below:
 
  The diagram below shows services and resources that are deployed as a part of this Landing Zone:
 
+
 ![Architecture_](images/oci_telco_landing_zone_baseline.png)
+
 
  ### <a name="arch-iam"></a>IAM Module
  This Identity and Access (IAM) module deploys the following resources:
@@ -431,4 +433,4 @@ We welcome your feedback. To post feedback, submit feature ideas or report bugs,
 
 * **Support for free tier tenancies**
     * Deploying in a free tier tenancy is not supported at this time as there are some services that are not available. If you want to try the Landing Zone, please upgrade your account to a pay-go. 
->>>>>>> Stashed changes
+
