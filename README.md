@@ -179,3 +179,4 @@ We welcome your feedback. To post feedback, submit feature ideas or report bugs,
 
 * **Support for free tier tenancies**
     * Deploying in a free tier tenancy is not supported at this time as there are some services that are not available. If you want to try the Landing Zone, please upgrade your account to a pay-go. 
+
