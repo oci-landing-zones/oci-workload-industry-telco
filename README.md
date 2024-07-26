@@ -15,7 +15,7 @@
 ## <a name="overview"></a>Overview
 The Oracle Telco Landing Zone (referred to as the Landing Zone in the rest of this document) template deploys a standardized environment specially designed for telecom workloads in an Oracle Cloud Infrastructure (OCI) tenancy that helps telecom service providers to onboard and migrate their on-prem telco workloads (such as cloud-native 4G and 5G network functions and applications) onto OCI.
 
-The Landing Zone is based off of the CIS OCI Landing Zone and utilizes other OCI Landing Zone modules for networking, security, and workloads as a reference. The Landing Zone deploys the following resources:
+The Landing Zone is based off of the OCI Landing Zone and utilizes other OCI Landing Zone modules for networking, security, and workloads as a reference. The Landing Zone deploys the following resources:
 
 - Identity and Access Management: compartment structure, policies, groups, dynamic groups, identity domains.
 - Network: A VCN with the required resources and the appropriate configuration needed for deploying an OKE cluster.
