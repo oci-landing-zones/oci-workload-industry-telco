@@ -145,7 +145,7 @@ The OKE cluster deployed by the Landing Zone can be configured according to the 
 The Landing Zone can be deployed using Oracle Resource Manager.
 
 To deploy the Landing Zone, click the following button:
-[![Deploy_To_OCI](images/DeployToOCI.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/https://github.com/oci-landing-zones/oci-workload-industry-telco/archive/main.zip)<br>
+[![Deploy_To_OCI](images/DeployToOCI.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/oci-landing-zones/oci-workload-industry-telco/archive/main.zip)<br>
 *If you are logged into your OCI tenancy in the Commercial Realm (OC1), the button will take you directly to OCI Resource Manager where you can proceed to deploy. If you are not logged, the button takes you to Oracle Cloud initial page where you must enter your tenancy name and login to OCI.*
 <br>
 
