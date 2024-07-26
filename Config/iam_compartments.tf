@@ -64,7 +64,7 @@ locals {
   enclosing_cmp = local.enable_enclosing_compartment ? { 
     (local.enclosing_compartment_key) : { 
       name : local.provided_enclosing_compartment_name, 
-      description : "OCILanding Zone enclosing compartment",
+      description : "OCI Landing Zone enclosing compartment",
       defined_tags : local.cmps_defined_tags, 
       freeform_tags : local.cmps_freeform_tags,
       children : {}
@@ -82,7 +82,7 @@ locals {
   network_cmp = local.enable_network_compartment ? {
     (local.network_compartment_key) : { 
       name : local.provided_network_compartment_name, 
-      description : "OCILanding Zone compartment for all network related resources: VCNs, subnets, network gateways, security lists, NSGs, load balancers, VNICs, and others.",
+      description : "OCI Landing Zone compartment for all network related resources: VCNs, subnets, network gateways, security lists, NSGs, load balancers, VNICs, and others.",
       defined_tags : local.cmps_defined_tags, 
       freeform_tags : local.cmps_freeform_tags,
       children : {}
@@ -96,7 +96,7 @@ locals {
   security_cmp = local.enable_security_compartment ? {
     (local.security_compartment_key) : { 
       name : local.provided_security_compartment_name, 
-      description : "OCILanding Zone compartment for all security related resources: vaults, topics, notifications, logging, scanning, and others.",
+      description : "OCI Landing Zone compartment for all security related resources: vaults, topics, notifications, logging, scanning, and others.",
       defined_tags : local.cmps_defined_tags,
       freeform_tags : local.cmps_freeform_tags,
       children : {}
@@ -110,7 +110,7 @@ locals {
   appdev_cmp = local.enable_appdev_compartment ? {
     (local.appdev_compartment_key) : { 
       name : local.provided_appdev_compartment_name, 
-      description : "OCILanding Zone compartment for all resources related to application development: compute instances, storage, functions, OKE, API Gateway, streaming, and others.",
+      description : "OCI Landing Zone compartment for all resources related to application development: compute instances, storage, functions, OKE, API Gateway, streaming, and others.",
       defined_tags : local.cmps_defined_tags,
       freeform_tags : local.cmps_freeform_tags,
       children : {}
@@ -124,7 +124,7 @@ locals {
   database_cmp = local.enable_database_compartment ? {
     (local.database_compartment_key) : { 
       name : local.provided_database_compartment_name, 
-      description : "OCILanding Zone compartment for all database related resources.",
+      description : "OCI Landing Zone compartment for all database related resources.",
       defined_tags : local.cmps_defined_tags,
       freeform_tags : local.cmps_freeform_tags,
       children : {}
@@ -138,7 +138,7 @@ locals {
   exainfra_cmp = local.enable_exainfra_compartment ? {
     (local.exainfra_compartment_key) : { 
       name : local.provided_exainfra_compartment_name, 
-      description : "OCILanding Zone compartment for Exadata Cloud Service infrastructure.",
+      description : "OCI Landing Zone compartment for Exadata Cloud Service infrastructure.",
       defined_tags : local.cmps_defined_tags,
       freeform_tags : local.cmps_freeform_tags,
       children : {}
