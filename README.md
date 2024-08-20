@@ -15,7 +15,7 @@
 ## <a name="overview"></a>Overview
 The Oracle Telco Landing Zone (referred to as the Landing Zone in the rest of this document) template deploys a standardized environment specially designed for telecom workloads in an Oracle Cloud Infrastructure (OCI) tenancy that helps telecom service providers to onboard and migrate their on-prem telco workloads (such as cloud-native 4G and 5G network functions and applications) onto OCI.
 
-The Landing Zone is based off of the CIS OCI Landing Zone and utilizes other OCI Landing Zone modules for networking, security, and workloads as a reference. The Landing Zone deploys the following resources:
+The Landing Zone is based off of the OCI Landing Zone and utilizes other OCI Landing Zone modules for networking, security, and workloads as a reference. The Landing Zone deploys the following resources:
 
 - Identity and Access Management: compartment structure, policies, groups, dynamic groups, identity domains.
 - Network: A VCN with the required resources and the appropriate configuration needed for deploying an OKE cluster.
@@ -24,7 +24,7 @@ The Landing Zone is based off of the CIS OCI Landing Zone and utilizes other OCI
   
 ## <a name="features"></a>Features
 
-This reference implementation is designed to support telco workloads on OCI, combined with the recommendations of CIS Foundations Benchmark for OCI and OCI architecture best practices. The  main differentiator of this landing zone is that it not only deploys the Identity and Management, Networking, and Security resources, but it also deploys workloads (OKE) required to onboard 4G/5G network functions. Furthermore, the OKE cluster deployed by the Landing Zone has been specially designed and customized to support both control plane and data plane workloads on OCI.
+This reference implementation is designed to support telco workloads on OCI, combined with the recommendations of OCI and OCI architecture best practices. The  main differentiator of this landing zone is that it not only deploys the Identity and Management, Networking, and Security resources, but it also deploys workloads (OKE) required to onboard 4G/5G network functions. Furthermore, the OKE cluster deployed by the Landing Zone has been specially designed and customized to support both control plane and data plane workloads on OCI.
 
 The key features of the Landing Zone are listed below:
 - Deployment of different subnets for traffic segregation (signaling, OAM, replication, etc.), that is usually required for 4G and 5G telco workloads. These subnets can be used with the OKE Cluster as load balancer subnets or worker node subnets.
@@ -97,7 +97,7 @@ The Landing Zone deploys the following dynamic groups:
  - security-admin-policy: Landing Zone policy for security-admin-group group to manage security related services in Landing Zone enclosing compartment (compartment Telco_LZ).
 
  ### <a name="arch-security"></a>Security Module
- This module contains modules for security services that help customers align their OCI implementations with the CIS (Center for Internet Security) OCI Foundations Benchmark recommendations.
+ This module contains modules for security services that help customers align their OCI implementations with the OCI Foundations Benchmark recommendations.
  
  The Landing Zone can deploy the following services:
   - Bastion Service: this is a module that manages bastions and bastion sessions in OCI. The OCI Bastion service provides restricted and time-limited access to target resources that do not have public endpoints. Bastions let authorized users connect from specific IP addresses to target resources using Secure Shell (SSH) sessions. When connected, users can interact with the target resource by using any software or protocol supported by SSH.
@@ -155,13 +155,13 @@ For instructions on how to deploy the landing zone: [Deployment](DEPLOYMENT.md)
 
 - [Strong Security Posture Monitoring with Cloud Guard](https://www.ateam-oracle.com/cloud-guard-support-in-cis-oci-landing-zone)
 - [Logging Consolidation with Service Connector Hub](https://www.ateam-oracle.com/security-log-consolidation-in-cis-oci-landing-zone)
-- [Vulnerability Scanning in CIS OCI Landing Zone](https://www.ateam-oracle.com/vulnerability-scanning-in-cis-oci-landing-zone)
-- [Operational Monitoring and Alerting in the CIS Landing Zone](https://www.ateam-oracle.com/operational-monitoring-and-alerting-in-the-cis-landing-zone)
+- [Vulnerability Scanning in OCI Landing Zone](https://www.ateam-oracle.com/vulnerability-scanning-in-cis-oci-landing-zone)
+- [Operational Monitoring and Alerting in the Landing Zone](https://www.ateam-oracle.com/operational-monitoring-and-alerting-in-the-cis-landing-zone)
 - [The Center for Internet Security Oracle Cloud Infrastructure Foundations Benchmark 1.2 Release update](https://www.ateam-oracle.com/post/the-center-for-internet-security-oracle-cloud-infrastructure-foundations-benchmark-12-release-update)
 
-## <a name="modules"></a>CIS OCI Foundations Benchmark Modules Collection
+## <a name="modules"></a> OCI Foundations Benchmark Modules Collection
 
-This repository uses a broader collection of repositories containing modules that help customers align their OCI implementations with the CIS OCI Foundations Benchmark recommendations:
+This repository uses a broader collection of repositories containing modules that help customers align their OCI implementations with the OCI Foundations Benchmark recommendations:
 - [Identity & Access Management](https://github.com/oci-landing-zones/terraform-oci-modules-iam)
 - [Networking](https://github.com/oci-landing-zones/terraform-oci-modules-networking)
 - [Governance](https://github.com/oci-landing-zones/terraform-oci-modules-governance)
@@ -169,7 +169,7 @@ This repository uses a broader collection of repositories containing modules tha
 - [Observability & Monitoring](https://github.com/oci-landing-zones/terraform-oci-modules-observability)
 - [Secure Workloads](https://github.com/oci-landing-zones/terraform-oci-modules-workloads)
 
-The modules in this collection are designed for flexibility, are straightforward to use, and enforce CIS OCI Foundations Benchmark recommendations when possible.
+The modules in this collection are designed for flexibility, are straightforward to use, and enforce OCI Foundations Benchmark recommendations when possible.
 
 Using these modules does not require a user extensive knowledge of Terraform or OCI resource types usage. Users declare a JSON object describing the OCI resources according to each module’s specification and minimal Terraform code to invoke the modules. The modules generate outputs that can be consumed by other modules as inputs, allowing for the creation of independently managed operational stacks to automate your entire OCI infrastructure.
 
