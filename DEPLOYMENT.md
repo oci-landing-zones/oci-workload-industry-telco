@@ -104,7 +104,7 @@ To edit the dynamic group, follow these steps:
 
 ### Configurating Customer Managed Keys
 This Landing Zone creates a Vault within the security compartment for customer to create or upload their master encryption keys.
-To comply with the CIS OCI Foundations Benchmark v1.2, customers that have chosen CIS level 2 must execute the steps below to enforce customer keys on the operator instance and the OKE worker nodes:
+To comply with the OCI Foundations Benchmark v1.2, customers that have chosen CIS API level 2 must execute the steps below to enforce customer keys on the operator instance and the OKE worker nodes:
 1. On the OCI Console, navigate  to Identity & Security --> Key Management & Secret Management --> Vault.
 2. In the Vault page, make sure that you select the Landing Zone's security compartment.
 3. The Vault must be show. Click on it to open it.
