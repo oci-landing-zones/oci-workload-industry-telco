@@ -13,7 +13,7 @@
 1. [Feedback](#feedback)
 
 ## <a name="overview"></a>Overview
-Welcome to the OCI Landing Zones (OLZ) Community! OCI Landing Zones simplify onboarding and running on OCI by providing design guidance, best practices, and pre-configured Terraform deployment templates for various architectures and use cases. These enable customers to easily provision a secure tenancy foundation in the cloud along with all required services, and reliably scale as workloads expand.
+Welcome to the [OCI Landing Zones (OLZ) Community](https://github.com/oci-landing-zones)! OCI Landing Zones simplify onboarding and running on OCI by providing design guidance, best practices, and pre-configured Terraform deployment templates for various architectures and use cases. These enable customers to easily provision a secure tenancy foundation in the cloud along with all required services, and reliably scale as workloads expand.
 
 The Oracle Telco Landing Zone (referred to as the Landing Zone in the rest of this document) template deploys a standardized environment specially designed for telecom workloads in an Oracle Cloud Infrastructure (OCI) tenancy that helps telecom service providers to onboard and migrate their on-prem telco workloads (such as cloud-native 4G and 5G network functions and applications) onto OCI.
 
